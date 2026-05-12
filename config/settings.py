@@ -17,6 +17,11 @@ class Settings:
     LLM_TEMPERATURE: float = float(os.getenv("LLM_TEMPERATURE", "0.7"))
     LLM_MAX_TOKENS: int = int(os.getenv("LLM_MAX_TOKENS", "2048"))
 
+    # DeepSeek 配置（作为 Gemini 额度耗尽时的 fallback）
+    DEEPSEEK_API_KEY: str = os.getenv("DEEPSEEK_API_KEY", "")
+    DEEPSEEK_MODEL: str = os.getenv("DEEPSEEK_MODEL", "deepseek-v4-pro")
+    DEEPSEEK_BASE_URL: str = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
+
     # 兼容保留（已切换到 Gemini，这两项不再使用）
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
     OPENAI_BASE_URL: str = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
@@ -41,15 +46,27 @@ class Settings:
     # SQLite 配置
     SQLITE_DB_PATH: str = os.getenv("SQLITE_DB_PATH", "./data/sqlite/memory.db")
 
-    # 天眼查 API 配置
-    TIANYANCHA_TOKEN: str = os.getenv("TIANYANCHA_TOKEN", "fake_token_placeholder")
-    TIANYANCHA_BASE_URL: str = os.getenv("TIANYANCHA_BASE_URL", "http://open.api.tianyancha.com")
+    # 邮件服务配置
+    EMAIL_ADDRESS: str = os.getenv("EMAIL_ADDRESS", "")
+    EMAIL_PASSWORD: str = os.getenv("EMAIL_PASSWORD", "")
+    IMAP_SERVER: str = os.getenv("IMAP_SERVER", "imap.qq.com")
+    SMTP_SERVER: str = os.getenv("SMTP_SERVER", "smtp.qq.com")
+    IMAP_PORT: int = int(os.getenv("IMAP_PORT", "993"))
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "465"))
 
     # 文档存储目录
     DOCUMENTS_DIR: str = os.getenv("DOCUMENTS_DIR", "./data/documents")
 
 
 settings = Settings()
+
+
+def is_deepseek_configured() -> bool:
+    """DeepSeek 是否配置就绪（允许作为 fallback）"""
+    return bool(settings.DEEPSEEK_API_KEY)
+
+
+settings.is_deepseek_configured = is_deepseek_configured
 
 # 模块级便捷导出
 SQLITE_DB_PATH = settings.SQLITE_DB_PATH

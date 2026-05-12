@@ -3,6 +3,12 @@ import uuid
 import os
 import sys
 
+# readline 解决终端输入清除/光标异常问题
+try:
+    import readline  # noqa: F401
+except ImportError:
+    pass
+
 from app.agents.router import RouterAgent
 from app.rag.vector_store import ChromaVectorStore
 from app.memory.memory import PersistentMemory
@@ -135,7 +141,9 @@ def main():
     # 主循环
     while True:
         try:
-            user_input = input("你: ").strip()
+            user_input = input("你: ")
+            # 清理不可见字符和首尾空白
+            user_input = user_input.strip().replace("\x00", "").replace("\u200b", "")
 
             if not user_input:
                 continue
