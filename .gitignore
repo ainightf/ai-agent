@@ -1,0 +1,36 @@
+# ========= 敏感信息 =========
+.env
+.env.*
+!.env.example
+
+# ========= Python =========
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ========= 数据/向量库（体积大且含业务数据）=========
+data/chroma_db/*
+!data/chroma_db/.gitkeep
+data/sqlite/*
+!data/sqlite/.gitkeep
+data/documents/*
+!data/documents/.gitkeep
+
+# ========= 大文件 =========
+*.pdf
+
+# ========= IDE =========
+.idea/
+.vscode/
+.qoder/
+.DS_Store
+*.swp
